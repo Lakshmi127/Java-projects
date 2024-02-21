@@ -1,0 +1,48 @@
+import java.util.Scanner;
+
+public class TypingSpeedCalculator {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter the passage to type: ");
+        String passage = scanner.nextLine();
+
+        System.out.println("Start typing the passage: ");
+        String typedText = scanner.nextLine();
+
+        long startTime = System.currentTimeMillis();
+
+        int accuracy = calculateAccuracy(passage, typedText);
+        double typingSpeed = calculateTypingSpeed(passage, startTime, typedText);
+
+        System.out.println("Accuracy: " + accuracy + "%");
+        System.out.println("Typing Speed: " + typingSpeed + " words per minute");
+    }
+
+    public static int calculateAccuracy(String passage, String typedText) {
+        String[] passageWords = passage.split("\\s+");
+        String[] typedWords = typedText.split("\\s+");
+
+        int totalWords = Math.min(passageWords.length, typedWords.length);
+        int accurateWords = 0;
+
+        for (int i = 0; i < totalWords; i++) {
+            if (passageWords[i].equals(typedWords[i])) {
+                accurateWords++;
+            }
+        }
+
+        return (int) ((double) accurateWords / totalWords * 100);
+    }
+
+    public static double calculateTypingSpeed(String passage, long startTime, String typedText) {
+        long endTime = System.currentTimeMillis();
+        long totalTime = endTime - startTime;
+
+        int typedWords = typedText.split("\\s+").length;
+
+        double minutes = totalTime / 60000.0;
+
+        return typedWords / minutes;
+    }
+}
